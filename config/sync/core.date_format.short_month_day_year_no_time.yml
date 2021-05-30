@@ -1,0 +1,8 @@
+uuid: fd497c2f-1238-4c2e-a401-c1279eccbcd8
+langcode: en
+status: true
+dependencies: {  }
+id: short_month_day_year_no_time
+label: 'Short Month, Day, Year - no time'
+locked: false
+pattern: 'M j, Y'

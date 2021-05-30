@@ -1,12 +1,12 @@
 uuid: a33b36ee-488d-4c8e-876b-d113c7dbe420
 langcode: en
-status: 1
+status: 0
 dependencies: {  }
 _core:
   default_config_hash: LF1x7-tCVBketCRtgp1skA6zwhG9THKGwd9rJy832hQ
 id: galaxy_s9
 label: 'Galaxy S9'
-weight: -8
+weight: -6
 orientation: portrait
 dimensions:
   width: 1440

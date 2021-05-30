@@ -15,9 +15,20 @@ matchers:
     id: 'entity:node'
     weight: 0
     settings:
-      metadata: 'by [node:author] | [node:created:medium]'
+      metadata: '[node:title] Updated: [node:changed:short_month_day_year_no_time]'
       bundles: {  }
-      group_by_bundle: false
-      include_unpublished: false
+      group_by_bundle: true
+      include_unpublished: true
       substitution_type: canonical
+      limit: 100
+  841faea3-43c3-4d3a-a400-3280383bf452:
+    uuid: 841faea3-43c3-4d3a-a400-3280383bf452
+    id: 'entity:media'
+    weight: 0
+    settings:
+      metadata: '[media:field_media_document:entity]'
+      bundles:
+        document: document
+      group_by_bundle: true
+      substitution_type: media
       limit: 100

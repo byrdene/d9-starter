@@ -1,12 +1,12 @@
 uuid: bff784a6-3c20-4e61-80b2-12cdaa9272b9
 langcode: en
-status: 1
+status: 0
 dependencies: {  }
 _core:
   default_config_hash: VdODXUFAMPMJlo-h17YecFvT5gKNJ_LkBobVlC-zSr4
 id: galaxy_tab_s4
 label: 'Galaxy Tab S4'
-weight: -6
+weight: -4
 orientation: portrait
 dimensions:
   width: 1600
