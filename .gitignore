@@ -5,9 +5,9 @@
 */sites/*/private
 
 # Ignore environment-specific settings.
-#*/sites/*/settings.local.php
-#*/sites/*/local.services.yml
-#*/sites/local.sites.php
+*/sites/*/settings.local.php
+*/sites/*/local.services.yml
+*/sites/local.sites.php
 
 # Logs and databases.
 *.log

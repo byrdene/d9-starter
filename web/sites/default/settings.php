@@ -90,6 +90,7 @@
  */
 $databases = [];
 
+
 /**
  * Customizing database settings.
  *
@@ -767,23 +768,6 @@ $settings['entity_update_backup'] = TRUE;
  */
 $settings['migrate_node_migrate_type_classic'] = FALSE;
 
-/**
- * Load local development override configuration, if available.
- *
- * Create a settings.local.php file to override variables on secondary (staging,
- * development, etc.) installations of this site.
- *
- * Typical uses of settings.local.php include:
- * - Disabling caching.
- * - Disabling JavaScript/CSS compression.
- * - Rerouting outgoing emails.
- *
- * Keep this code block at the end of this file to take full effect.
- */
-
- if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
-   include $app_root . '/' . $site_path . '/settings.local.php';
- }
 $databases['default']['default'] = array (
   'database' => 'zaldomoh_d9_starter',
   'username' => 'zaldomoh_d9_starter',
@@ -799,3 +783,21 @@ $databases['default']['default'] = array (
  * Place the config directory outside of the Drupal root.
  */
 $settings['config_sync_directory'] = dirname(DRUPAL_ROOT) . '/config/sync';
+
+/**
+ * Load local development override configuration, if available.
+ *
+ * Create a settings.local.php file to override variables on secondary (staging,
+ * development, etc.) installations of this site.
+ *
+ * Typical uses of settings.local.php include:
+ * - Disabling caching.
+ * - Disabling JavaScript/CSS compression.
+ * - Rerouting outgoing emails.
+ *
+ * Keep this code block at the end of this file to take full effect.
+ */
+
+if (file_exists(__DIR__ . '/settings.local.php')) {
+  include_once __DIR__ . '/settings.local.php';
+}
