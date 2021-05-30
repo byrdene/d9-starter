@@ -780,9 +780,9 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
    include $app_root . '/' . $site_path . '/settings.local.php';
  }
 $databases['default']['default'] = array (
-  'database' => 'd9-starter',
-  'username' => 'd9-starter',
-  'password' => 'd9-starter',
+  'database' => 'zaldomoh_d9_starter',
+  'username' => 'zaldomoh_d9_starter',
+  'password' => 'B9c(pHTH_ZY1',
   'prefix' => '',
   'host' => 'localhost',
   'port' => '3306',
