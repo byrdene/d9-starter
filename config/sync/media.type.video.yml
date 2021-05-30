@@ -1,0 +1,14 @@
+uuid: 42674e66-00ee-42b7-a0c7-4ad5da642ee5
+langcode: en
+status: true
+dependencies: {  }
+id: video
+label: Video
+description: 'A locally hosted video file.'
+source: video_file
+queue_thumbnail_downloads: false
+new_revision: true
+source_configuration:
+  source_field: field_media_video_file
+field_map:
+  name: name
