@@ -3,18 +3,87 @@
 // @codingStandardsIgnoreFile
 
 /**
- * @file
- * Local development override configuration feature.
- *
- * To activate this feature, copy and rename it such that its path plus
- * filename is 'sites/default/settings.local.php'. Then, go to the bottom of
- * 'sites/default/settings.php' and uncomment the commented lines that mention
- * 'settings.local.php'.
- *
- * If you are using a site name in the path, such as 'sites/example.com', copy
- * this file to 'sites/example.com/settings.local.php', and uncomment the lines
- * at the bottom of 'sites/example.com/settings.php'.
+ * Trusted host patterns.
  */
+$settings['trusted_host_patterns'] = [
+//  'GERONIMO.test',
+//  'local.*'
+];
+
+/**
+ * Databases.
+ */
+$databases['default']['default'] = [
+  'database' => 'GERONIMO',
+  'username' => 'GERONIMO',
+  'password' => 'GERONIMO',
+  'prefix' => '',
+  'host' => 'localhost',
+  'port' => '3306',
+  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+  'driver' => 'mysql',
+];
+
+$settings['hash_salt'] = 'N7UpZmvLUHP9l2ddbGkJSb5bKDR6t3exLorb/hv1IbI=';
+$settings["file_temp_path"] = $_SERVER['HOME'] . '/tmp';
+$settings['file_private_path'] = 'sites/default/files/private';
+
+/**
+ * Error and memory.
+ */
+error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
+ini_set('memory_limit', '512M');
+
+/**
+ * Show all error messages, with backtrace information.
+ *
+ * In case the error level could not be fetched from the database, as for
+ * example the database connection failed, we rely only on this value.
+ */
+$config['system.logging']['error_level'] = 'verbose';
+
+/**
+ * Disable CSS and JS aggregation.
+ */
+$config['system.performance']['css']['preprocess'] = FALSE;
+$config['system.performance']['js']['preprocess'] = FALSE;
+
+/**
+ * Environment indicator.
+ */
+$config['environment_indicator.indicator']['name'] = 'Local';
+$config['environment_indicator.indicator']['bg_color'] = '#594367'; // Eggplant
+
+/**
+ * Stage File Proxy Settings domain override.
+ */
+# $config['stage_file_proxy.settings']['origin'] = 'http://admin:ohosite1100@example.domain';
+
+/**
+ * Config split.
+ */
+$config['config_split.config_split.local']['status'] = TRUE;
+// Comment out the previous line + un-comment following line
+// when running drush cex -y to get changes from prod/live
+//$config['config_split.config_split.live']['status'] = TRUE;
+
+/**
+ * Uncomment the following lines to disable all caches (Render Cache, Internal Page Cache, Dynamic Page Cache)
+ *
+ * This is useful in the early stages of development.
+ * Make sure to test the site pre-launch with caching enabled again.
+ *
+ * Make sure the site is installed first before disabling the caches.
+ * Make sure that you have a development.services.yml in your "/sites/" directory before you do.
+ *
+ */
+
+$settings['container_yamls'][] = __DIR__ . '/local.services.yml';
+$settings['cache']['bins']['render'] = 'cache.backend.null';
+$settings['cache']['bins']['page'] = 'cache.backend.null';
+$settings['cache']['bins']['dynamic_page_cache'] = 'cache.backend.null';
 
 /**
  * Assertions.
@@ -35,38 +104,7 @@
 assert_options(ASSERT_ACTIVE, TRUE);
 \Drupal\Component\Assertion\Handle::register();
 
-/**
- * Enable local development services.
- */
-$settings['container_yamls'][] = __DIR__ . '/local.services.yml';
 
-/**
- * Show all error messages, with backtrace information.
- *
- * In case the error level could not be fetched from the database, as for
- * example the database connection failed, we rely only on this value.
- */
-$config['system.logging']['error_level'] = 'verbose';
-
-/**
- * Disable CSS and JS aggregation.
- */
-$config['system.performance']['css']['preprocess'] = FALSE;
-$config['system.performance']['js']['preprocess'] = FALSE;
-
-/**
- * Disable the render cache.
- *
- * Note: you should test with the render cache enabled, to ensure the correct
- * cacheability metadata is present. However, in the early stages of
- * development, you may want to disable it.
- *
- * This setting disables the render cache by using the Null cache back-end
- * defined by the development.services.yml file above.
- *
- * Only use this setting once the site has been installed.
- */
-$settings['cache']['bins']['render'] = 'cache.backend.null';
 
 /**
  * Disable caching for migrations.
@@ -76,28 +114,6 @@ $settings['cache']['bins']['render'] = 'cache.backend.null';
  */
 # $settings['cache']['bins']['discovery_migration'] = 'cache.backend.memory';
 
-/**
- * Disable Internal Page Cache.
- *
- * Note: you should test with Internal Page Cache enabled, to ensure the correct
- * cacheability metadata is present. However, in the early stages of
- * development, you may want to disable it.
- *
- * This setting disables the page cache by using the Null cache back-end
- * defined by the development.services.yml file above.
- *
- * Only use this setting once the site has been installed.
- */
-$settings['cache']['bins']['page'] = 'cache.backend.null';
-
-/**
- * Disable Dynamic Page Cache.
- *
- * Note: you should test with Dynamic Page Cache enabled, to ensure the correct
- * cacheability metadata is present (and hence the expected behavior). However,
- * in the early stages of development, you may want to disable it.
- */
-$settings['cache']['bins']['dynamic_page_cache'] = 'cache.backend.null';
 
 /**
  * Allow test modules and themes to be installed.
@@ -130,80 +146,4 @@ $settings['rebuild_access'] = TRUE;
  */
 $settings['skip_permissions_hardening'] = TRUE;
 
-/**
- * Exclude modules from configuration synchronisation.
- *
- * On config export sync, no config or dependent config of any excluded module
- * is exported. On config import sync, any config of any installed excluded
- * module is ignored. In the exported configuration, it will be as if the
- * excluded module had never been installed. When syncing configuration, if an
- * excluded module is already installed, it will not be uninstalled by the
- * configuration synchronisation, and dependent configuration will remain
- * intact. This affects only configuration synchronisation; single import and
- * export of configuration are not affected.
- *
- * Drupal does not validate or sanity check the list of excluded modules. For
- * instance, it is your own responsibility to never exclude required modules,
- * because it would mean that the exported configuration can not be imported
- * anymore.
- *
- * This is an advanced feature and using it means opting out of some of the
- * guarantees the configuration synchronisation provides. It is not recommended
- * to use this feature with modules that affect Drupal in a major way such as
- * the language or field module.
- */
-# $settings['config_exclude_modules'] = ['devel', 'stage_file_proxy'];
 
-/**
- * Disable the Shield module.
- */
-# $config['shield.settings']['credentials']['shield']['user'] = NULL;
-
-/**
- * Stage File Proxy Settings domain override.
- */
-# $config['stage_file_proxy.settings']['origin'] = 'http://admin:ohosite1100@example.domain';
-
-/**
- * Trusted host patterns.
- */
-$settings['trusted_host_patterns'] = [
-//  'GERONIMO.test',
-//  'local.*'
-];
-
-/**
- * Error and memory.
- */
-error_reporting(E_ALL);
-ini_set('display_errors', TRUE);
-ini_set('display_startup_errors', TRUE);
-ini_set('memory_limit', '512M');
-
-/**
- * Environment indicator.
- */
-$config['environment_indicator.indicator']['name'] = 'Local';
-$config['environment_indicator.indicator']['bg_color'] = '#594367'; // Eggplant
-
-/**
- * Config split.
- */
-$config['config_split.config_split.local']['status'] = TRUE;
-// Comment out the previous line + un-comment following line
-// when running drush cex -y to get changes from prod/live
-//$config['config_split.config_split.live']['status'] = TRUE;
-
-/**
- * Databases.
- */
-$databases['default']['default'] = [
-  'database' => 'GERONIMO',
-  'username' => 'GERONIMO',
-  'password' => 'GERONIMO',
-  'prefix' => '',
-  'host' => 'localhost',
-  'port' => '3306',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-  'driver' => 'mysql',
-];

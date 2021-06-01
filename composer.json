@@ -118,16 +118,13 @@
     },
     "scripts": {
         "post-drupal-scaffold-cmd": [
+            "cd web && if [ ! -f sites/default/services.yml ]; then cp sites/default/default.services.yml sites/default/services.yml; fi",
             "if [ ! -f .gitignore ]; then cp composer-extras/gitignore .gitignore; fi"
         ],
         "post-install-cmd": [
             "cd web && if [ ! -f sites/default/settings.local.php ]; then cd ../ && cp composer-extras/settings.local.php web/sites/default/settings.local.php; fi",
-            "cd web && if [ ! -f sites/default/settings.local.php ]; then cd ../ && cp composer-extras/settings.local.php web/sites/default/settings.local.php; fi",
+            "cd web && if [ ! -f sites/default/local.services.yml ]; then cd ../ && cp composer-extras/local.services.yml web/sites/default/local.services.yml; fi",
             "cd web && if [ ! -f sites/default/settings.php ]; then cd ../ && cp composer-extras/settings.php web/sites/default/settings.php; fi"
-        ],
-        "post-update-cmd": [
-            "cd web && if [ ! -f sites/default/settings.local.php ]; then cd ../ && cp composer-extras/settings.local.php web/sites/default/settings.local.php; fi",
-            "cd web && if [ ! -f sites/default/local.services.php ]; then cd ../ && cp composer-extras/local.services.php web/sites/default/lcoal.services.php; fi"
         ]
     },
     "conflict": {
