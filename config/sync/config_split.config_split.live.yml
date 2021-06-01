@@ -1,0 +1,15 @@
+uuid: 4c45e2b8-33e0-489f-b144-646d5719697e
+langcode: en
+status: false
+dependencies: {  }
+id: live
+label: Live
+description: 'This is the Live or Prod environment.'
+folder: ../config/splits/live
+module: {  }
+theme: {  }
+blacklist: {  }
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 3

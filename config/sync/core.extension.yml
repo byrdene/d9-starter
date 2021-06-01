@@ -12,7 +12,6 @@ module:
   ckeditor: 0
   coffee: 0
   color: 0
-  composer_deploy: 0
   config: 0
   config_filter: 0
   config_ignore: 0
@@ -24,7 +23,6 @@ module:
   crop: 0
   ctools: 0
   dblog: 0
-  devel: 0
   diff: 0
   dynamic_page_cache: 0
   editor: 0
@@ -33,8 +31,6 @@ module:
   entity_embed: 0
   entity_reference_revisions: 0
   entity_type_clone: 0
-  environment_indicator: 0
-  environment_indicator_ui: 0
   features: 0
   features_ui: 0
   field: 0
@@ -43,9 +39,7 @@ module:
   file: 0
   filter: 0
   focal_point: 0
-  form_display_field_machine_name: 0
   gin_toolbar: 0
-  git_deploy: 0
   honeypot: 0
   image: 0
   inline_entity_form: 0
@@ -84,7 +78,6 @@ module:
   search_api: 0
   search_api_autocomplete: 0
   search_api_db: 0
-  stage_file_proxy: 0
   system: 0
   taxonomy: 0
   telephone: 0
@@ -92,8 +85,6 @@ module:
   token: 0
   toolbar: 0
   twig_tweak: 0
-  update: 0
-  upgrade_status: 0
   user: 0
   view_mode_selector: 0
   viewfield: 0
