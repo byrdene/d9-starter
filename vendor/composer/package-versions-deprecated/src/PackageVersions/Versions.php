@@ -36,6 +36,7 @@ final class Versions
   'asm89/stack-cors' => '1.3.0@b9c31def6a83f84b4d4a40d35996d375755f0e08',
   'bower-asset/colorbox' => '1.6.4@bac78120c6ca9e63370cc317ab6f400129cd6608',
   'bower-asset/jquery' => '3.6.0@e786e3d9707ffd9b0dd330ca135b66344dcef85a',
+  'bower-asset/lazysizes' => '5.3.1@81cf774c6a7f4d8f7f3909e225a65d8acb10cb20',
   'caxy/php-htmldiff' => 'v0.1.12@7fb8aa0ad77864f1d3604ae4a31af9cbabb91485',
   'chi-teck/drupal-code-generator' => '1.33.1@5f814e980b6f9cf1ca8c74cc9385c3d81090d388',
   'composer/installers' => 'v1.11.0@ae03311f45dfe194412081526be2e003960df74b',
@@ -109,6 +110,7 @@ final class Versions
   'drupal/jquery_ui_slider' => '1.1.0@8.x-1.1',
   'drupal/jquery_ui_touch_punch' => '1.0.0@1.0.0',
   'drupal/layout_paragraphs' => '1.0.0@1.0.0',
+  'drupal/lazy' => '3.10.0@8.x-3.10',
   'drupal/linked_field' => '1.3.0@8.x-1.3',
   'drupal/linkit' => '6.0.0-beta2@6.0.0-beta2',
   'drupal/masquerade' => '2.0.0-beta4@8.x-2.0-beta4',
@@ -287,7 +289,7 @@ final class Versions
   'symfony/lock' => 'v4.4.23@0859e744a614e96260949f10d9ac4b8adc8cdd0f',
   'symfony/phpunit-bridge' => 'v5.2.9@ea24e42c1ee04792f5d814da6f0814b20ece2907',
   'theseer/tokenizer' => '1.2.0@75a63c33a8577608444246075ea0af0d052e452a',
-  'drupal/recommended-project' => 'dev-master@b6cdc70129b9c829a838a0ff27ad374725ac6345',
+  'drupal/recommended-project' => 'dev-master@0d40cf002b834d38215626d7c3a262436a477498',
 );
 
     private function __construct()
