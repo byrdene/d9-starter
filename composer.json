@@ -116,6 +116,20 @@
         "drupal/core-dev": "^9.0.0",
         "mglaman/drupal-check": "^1.1"
     },
+    "scripts": {
+        "post-drupal-scaffold-cmd": [
+            "if [ ! -f .gitignore ]; then cp composer-extras/gitignore .gitignore; fi"
+        ],
+        "post-install-cmd": [
+            "cd web && if [ ! -f sites/default/settings.local.php ]; then cd ../ && cp composer-extras/settings.local.php web/sites/default/settings.local.php; fi",
+            "cd web && if [ ! -f sites/default/settings.local.php ]; then cd ../ && cp composer-extras/settings.local.php web/sites/default/settings.local.php; fi",
+            "cd web && if [ ! -f sites/default/settings.php ]; then cd ../ && cp composer-extras/settings.php web/sites/default/settings.php; fi"
+        ],
+        "post-update-cmd": [
+            "cd web && if [ ! -f sites/default/settings.local.php ]; then cd ../ && cp composer-extras/settings.local.php web/sites/default/settings.local.php; fi",
+            "cd web && if [ ! -f sites/default/local.services.php ]; then cd ../ && cp composer-extras/local.services.php web/sites/default/lcoal.services.php; fi"
+        ]
+    },
     "conflict": {
         "drupal/drupal": "*"
     },
