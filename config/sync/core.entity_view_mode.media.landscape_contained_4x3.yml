@@ -1,0 +1,10 @@
+uuid: 8f902b4d-5930-4a03-b3b5-84459cdab8ce
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.landscape_contained_4x3
+label: 'Landscape - Contained (4x3)'
+targetEntityType: media
+cache: true

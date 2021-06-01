@@ -1,0 +1,10 @@
+uuid: e9136513-9eab-4590-911c-0ae4e3226b5f
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.landscape_contained_16x9
+label: 'Landscape - Contained (16x9)'
+targetEntityType: media
+cache: true

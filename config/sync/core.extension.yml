@@ -28,7 +28,9 @@ module:
   diff: 0
   dynamic_page_cache: 0
   editor: 0
+  embed: 0
   entity: 0
+  entity_embed: 0
   entity_reference_revisions: 0
   entity_type_clone: 0
   environment_indicator: 0
@@ -55,6 +57,7 @@ module:
   jquery_ui_touch_punch: 0
   layout_discovery: 0
   layout_paragraphs: 0
+  lazy: 0
   link: 0
   linkit: 0
   masquerade: 0

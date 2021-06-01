@@ -1,0 +1,10 @@
+uuid: 0c163e4e-05c1-4fb0-9c66-9b926a5010d9
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.landscape_full_width_4x3
+label: 'Landscape - Full width (4x3)'
+targetEntityType: media
+cache: true

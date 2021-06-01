@@ -1,0 +1,10 @@
+uuid: ae2e6afd-b250-40c7-b7f9-0b3fe241fdf9
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.portrait_2x3
+label: 'Portrait (2x3)'
+targetEntityType: media
+cache: true

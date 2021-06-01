@@ -1,0 +1,10 @@
+uuid: c1d5bf60-5cd7-48de-883e-17ba42b2e6fb
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.landscape_full_width_3x2
+label: 'Landscape - Full width (3x2)'
+targetEntityType: media
+cache: true

@@ -1,0 +1,15 @@
+uuid: a6156890-dc25-4283-812a-fce4ffa088e8
+langcode: en
+status: true
+dependencies: {  }
+name: scaled_original_narrow
+label: 'Scaled original (narrow)'
+effects:
+  96b09868-712b-4eaf-8ea4-6f18fa995e3a:
+    uuid: 96b09868-712b-4eaf-8ea4-6f18fa995e3a
+    id: image_scale
+    weight: 1
+    data:
+      width: 1199
+      height: null
+      upscale: false

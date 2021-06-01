@@ -1,0 +1,10 @@
+uuid: 8f43eb64-b448-4ae9-a473-53d5447f9688
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.portrait_3x4
+label: 'Portrait (3x4)'
+targetEntityType: media
+cache: true
