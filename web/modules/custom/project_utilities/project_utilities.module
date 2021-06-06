@@ -5,24 +5,8 @@
  * Contains project_utilities.module.
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldConfig;
-
-/**
- * Implements hook_help().
- */
-function project_utilities_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Main module help for the project_utilities module.
-    case 'help.page.project_utilities':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('Customizations to every Theory One Design Drupal 8 build.') . '</p>';
-      return $output;
-
-  }
-}
 
 /**
  * Implements hook_form_views_exposed_form_alter().
@@ -54,7 +38,7 @@ function project_utilities_form_views_exposed_form_alter(&$form, $form_state, $f
     $form['keyword-filter']['#attributes']['class'][] = 'form-item--id-keyword-filter';
     $form['combine']['#attributes']['class'][] = 'form-item--id-combine';
 
-    // Uncomment and Accessibility improvements
+    // Uncomment to add Accessibility improvements. Update the variables for the project's specific filterable views
 //    $calendar = $form["#id"] == "views-exposed-form-calendar-page-1";
 //    $news = $form["#id"] == "views-exposed-form-news-ideas-page-1";
 //    $faculty = $form["#id"] == "views-exposed-form-faculty-staff-directory-page-1";
@@ -83,7 +67,7 @@ function project_utilities_form_alter(&$form, &$form_state, $form_id) {
     unset($form['pass']['#description']);
   }
 
-  // Hide access to fields
+  // Hide access to fields since Field Permissions is either overkill or doesn't do the job
   $user_role = \Drupal::currentUser()->getRoles();
   $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
   $uid = $user->get('uid')->value;
@@ -92,78 +76,6 @@ function project_utilities_form_alter(&$form, &$form_state, $form_id) {
   }
   else {
     $form['field_related_view']['#access'] = FALSE;
-  }
-
-}
-
-/**
- * Implements hook_field_widget_form_alter().
- * Open the summary text by default. (A simplified version of https://www.drupal.org/project/text_summary_options)
- */
-function project_utilities_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
-  $field_definition = $context['items']->getFieldDefinition();
-  // Base fields are not configurable.
-  if (!$field_definition instanceof FieldConfig) {
-    return;
-  }
-  // We can't use the protected isDefaultValueWidget() method.
-  $is_default_value_widget = (bool) $form_state->get('default_value_widget');
-  if ($field_definition->getType() == 'text_with_summary' && !$is_default_value_widget) {
-    unset($element['summary']['#attached']);
-  }
-}
-
-/**
- * Implements hook_editor_js_settings_alter().
- * Pasting text into full_html format should come in unformatted
-* The height of the editor window should be smaller
- */
-function project_utilities_editor_js_settings_alter(array &$settings) {
-  if (!empty($settings['editor']['formats']['full_html'])) {
-    $full_html = &$settings['editor']['formats']['full_html'];
-    $full_html['editorSettings']['forcePasteAsPlainText'] = 'true';
-    $full_html['editorSettings']['autoGrow_minHeight'] = '200';
-  }
-
-  // basic html format
-  if (!empty($settings['editor']['formats']['basic_html'])) {
-    $basic_html = &$settings['editor']['formats']['basic_html'];
-    $basic_html['editorSettings']['forcePasteAsPlainText'] = 'true';
-    $basic_html['editorSettings']['autoGrow_minHeight'] = '60';
-  }
-}
-
-
-/**
- * Add image thumbnail to Inline Entity Form table.
- * After updating to Media in Core (and all supporting modules including Inline Entity Form),
- * the thumbnail no longer displayed by default.
- */
-function project_utilities_inline_entity_form_table_fields_alter(&$fields, $context) {
-
-// Add thumbnail to image and video media bundles
-$bundles = ['image','video'];
-
-if ($context['entity_type'] == 'media' && array_intersect($bundles, $context['allowed_bundles'])) {
-
-    $fields['thumbnail'] = [
-      'type' => 'field',
-      'label' => t('Thumbnail'),
-      'display_options' => array(
-        'label' => 'hidden',
-        'type' => 'image',
-        'settings' => [
-          'image_style' => 'thumbnail',
-        ],
-      ),
-      'weight' => 10,
-    ];
-
-  }
-
-  // If 'bundle' is set, reorder to first col
-  if(isset($fields['bundle'])){
-    $fields['bundle']['weight'] = 0;
   }
 
 }
