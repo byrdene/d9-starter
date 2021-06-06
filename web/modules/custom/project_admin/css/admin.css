@@ -1,0 +1,115 @@
+/*Gin Admin theme overrides.*/
+
+/*Toolbar*/
+
+.toolbar-icon-toggle-horizontal,
+.toolbar-icon-toggle-vertical {
+  z-index: 2;
+}
+
+/*General node edit form*/
+.page-title em {
+  display: inline-block;
+  margin-right: .25em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.layout-paragraphs-add-more-menu__group--layout {
+  justify-content: center !important;
+}
+
+.layout-paragraphs-add-more-menu__group--layout:before,
+.layout-paragraphs-add-more-menu__group--content:before {
+  content: "" !important;
+  padding: 0 !important;
+}
+
+.paragraph-layout--label {
+  opacity: .8;
+  text-transform: uppercase;
+}
+
+.paragraph-type--label {
+  text-transform: uppercase;
+  font-size: .8em;
+  line-height: 1.25em;
+}
+
+.paragraph-type--label:before {
+  content: "[ "
+}
+
+.paragraph-type--label:after {
+  content: " ]"
+}
+
+/*Field styles*/
+.layout-paragraphs-layout-region .field--name-field-heading {
+  text-align: center;
+}
+
+.layout-paragraphs-layout-region .field--name-field-heading-status {
+  font-size: .8rem;
+  text-align: center;
+  margin-top: -10px !important;
+  padding-bottom: 10px;
+  opacity: .6;
+  font-style: italic;
+}
+
+h2 {
+  font-size: 1.75em;
+}
+
+a.button--outlined {
+  background: none;
+}
+
+.field--name-field-caption {
+  font-size: .8em;
+}
+
+.field--name-field-links {
+  display: inline-block;
+  margin-top: 10px;
+  margin-right: .5em;
+}
+
+.field--name-field-section-title:after {
+  display: block;
+  border-top: 1px dashed #ebebeb;
+  font-size: .70em;
+  text-transform: uppercase;
+  color: gray;
+}
+
+.field--name-field-section-title h2,
+.field--name-field-section-title h3 {
+  margin-bottom: 0;
+}
+
+.field--name-field-section-body {
+  padding: 15px;
+}
+
+.paragraph--type--tab-item .field--name-field-section-title:after {
+  content: "tab section";
+}
+
+.paragraph--type--accordion-item .field--name-field-section-title:after {
+  content: "accordion section";
+}
+
+.field--name-field-video {
+  position: relative;
+}
+
+.field--name-video-modal-button {
+  position: absolute;
+  top: 48%;
+  left: calc(50% - 82px);
+}
+

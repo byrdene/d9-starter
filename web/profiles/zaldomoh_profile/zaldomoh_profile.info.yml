@@ -70,6 +70,7 @@ install:
   - entity_embed
   - entity_reference_revisions
   - entity_type_clone
+  - environment_indicator
   - features
   - features_ui
   - field_group
@@ -110,6 +111,8 @@ install:
   - webform_node
   - webform_ui
   # Custom
+  - project_admin
+  - project_utilities
 themes:
   - stark
   - claro

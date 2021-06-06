@@ -8,7 +8,6 @@ description: ''
 folder: ../config/splits/dev
 module:
   composer_deploy: 0
-  environment_indicator: 0
   form_display_field_machine_name: 0
   git_deploy: 0
   update: 0

@@ -9,8 +9,6 @@ folder: ../config/splits/local
 module:
   composer_deploy: 0
   devel: 0
-  environment_indicator: 0
-  environment_indicator_ui: 0
   form_display_field_machine_name: 0
   git_deploy: 0
   stage_file_proxy: 0
