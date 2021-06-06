@@ -71,6 +71,7 @@ final class Versions
   'drupal/block_class' => '1.3.0@8.x-1.3',
   'drupal/chosen' => '3.0.1@3.0.1',
   'drupal/chosen_lib' => '3.0.1@',
+  'drupal/ckeditor_config' => '3.0.0@8.x-3.0',
   'drupal/coffee' => '1.2.0@8.x-1.2',
   'drupal/colorbox' => '1.7.0@8.x-1.7',
   'drupal/composer_deploy' => '1.6.0@8.x-1.6',
@@ -289,7 +290,7 @@ final class Versions
   'symfony/lock' => 'v4.4.23@0859e744a614e96260949f10d9ac4b8adc8cdd0f',
   'symfony/phpunit-bridge' => 'v5.2.9@ea24e42c1ee04792f5d814da6f0814b20ece2907',
   'theseer/tokenizer' => '1.2.0@75a63c33a8577608444246075ea0af0d052e452a',
-  'drupal/recommended-project' => 'dev-master@0d40cf002b834d38215626d7c3a262436a477498',
+  'drupal/recommended-project' => 'dev-master@445c314d07e6685c6f4aff76dc5f945fc752e5e0',
 );
 
     private function __construct()
