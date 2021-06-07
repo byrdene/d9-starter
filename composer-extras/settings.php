@@ -283,7 +283,7 @@ $databases = [];
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
-$settings['hash_salt'] = 'jlTaz7I-X4h9DDWHbzU-xxR-FDtfKtBWeEgoYiF19QCAyn9OvyLiVVOjZ2DDvWbfB5Pn_0YsEg';
+$settings['hash_salt'] = '';
 
 /**
  * Deployment identifier.
@@ -764,9 +764,9 @@ $settings['entity_update_backup'] = TRUE;
 $settings['migrate_node_migrate_type_classic'] = FALSE;
 
 $databases['default']['default'] = array (
-  'database' => 'GERONIMO-PROD',
-  'username' => 'GERONIMO-PROD',
-  'password' => 'GERONIMO-PROD',
+  'database' => 'zaldomoh-PROD',
+  'username' => 'zaldomoh-PROD',
+  'password' => 'zaldomoh-PROD',
   'prefix' => '',
   'host' => 'localhost',
   'port' => '3306',
