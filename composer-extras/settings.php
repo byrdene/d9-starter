@@ -764,9 +764,9 @@ $settings['entity_update_backup'] = TRUE;
 $settings['migrate_node_migrate_type_classic'] = FALSE;
 
 $databases['default']['default'] = array (
-  'database' => 'zaldomoh-PROD',
-  'username' => 'zaldomoh-PROD',
-  'password' => 'zaldomoh-PROD',
+  'database' => 'DBPROD',
+  'username' => 'DBPROD',
+  'password' => 'DBPROD',
   'prefix' => '',
   'host' => 'localhost',
   'port' => '3306',
