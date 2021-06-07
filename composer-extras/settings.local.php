@@ -6,7 +6,7 @@
  * Trusted host patterns.
  */
 $settings['trusted_host_patterns'] = [
-//  'GERONIMO.test',
+//  'zaldomoh.test',
 //  'local.*'
 ];
 
@@ -14,9 +14,9 @@ $settings['trusted_host_patterns'] = [
  * Databases.
  */
 $databases['default']['default'] = [
-  'database' => 'GERONIMO',
-  'username' => 'GERONIMO',
-  'password' => 'GERONIMO',
+  'database' => 'zaldomoh',
+  'username' => 'zaldomoh',
+  'password' => 'zaldomoh',
   'prefix' => '',
   'host' => 'localhost',
   'port' => '3306',
