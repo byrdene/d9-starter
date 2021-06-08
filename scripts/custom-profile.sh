@@ -18,7 +18,7 @@ export LANG=C;
 #sed -i "" is needed by the OSX version of sed (instead of sed -i)
 cd web/profiles
 find . -type f -exec sed -i "" "s|${FIND}|${REPLACE}|g" {} +
-# rename theme folder name
+# rename theme folder name (the rename utility is required and can be downloaded with homebrew: brew install rename)
 rename -vs ${FIND} ${REPLACE} *
 # rename file names too
 cd ${REPLACE}_profile

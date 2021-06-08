@@ -26,13 +26,13 @@ with our default installation settings and local development files.
     * Trusted host patterns.
     * Database name, username, and password.
 5. Add any host-specific settings to `sites/default/settings.php`.
-6. Rename the custom profile:
-    * From the root directory run `scripts/custom-prifle.sh zaldomoh NEWNAME`
+6. Rename the custom profile (the rename utility is required and can be downloaded with homebrew: `brew install rename`):
+    * From the root directory run `scripts/custom-profile.sh zaldomoh NEWNAME`
 7. Run the Drupal installer.
 8. After install, you may need to remove or edit the database credentials the installer added to
   `sites/default/settings.php`. 
 9. Import the local config split settings: `drush cim`  
-10. Set up the project's custom theme
+10. Set up the project's custom theme (the rename utility is required and can be downloaded with homebrew: `brew install rename`):
     * From the root directory, run `scripts/custom-theme.sh zaldomoh NEWNAME`
     * Enable the new theme in the UI
     * cd into the the custom theme directory
