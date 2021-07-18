@@ -79,6 +79,7 @@ install:
   - honeypot
   - inline_entity_form
   - jquery_ui
+  - jquery_ui_accordion
   - jquery_ui_checkboxradio
   - jquery_ui_datepicker
   - jquery_ui_slider
