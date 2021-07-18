@@ -1,0 +1,14 @@
+uuid: 54844a6f-a755-4a39-9aa8-f703817c4f4e
+langcode: en
+status: 1
+dependencies: {  }
+_core:
+  default_config_hash: 9Q2LKEG-dgPVfq_5I76prd69QmpNxPfJA9DuK877h3w
+id: small
+label: 'Smart phone'
+weight: -10
+orientation: portrait
+dimensions:
+  width: 768
+  height: 1280
+  dppx: !!float 2

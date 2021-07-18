@@ -1,0 +1,16 @@
+uuid: df9664d7-2332-4d1c-806c-6a7b376332a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.developer
+  module:
+    - user
+_core:
+  default_config_hash: NcnHkaFGVNIEsoNuhvvZTaYPyLb3BkVwsKViNnykFEs
+id: user_add_role_action.developer
+label: 'Add the Developer role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: developer

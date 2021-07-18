@@ -1,0 +1,39 @@
+uuid: 6bb8535c-979a-4576-a41d-b1e250273925
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.portrait_2x3
+    - field.field.media.image.field_media_image
+    - lazy.settings
+    - media.type.image
+    - responsive_image.styles.portrait_2x3
+  module:
+    - lazy
+    - responsive_image
+_core:
+  default_config_hash: eKr9NDbAk2f5JfeMjXlPS1IRra7nJ6IZsCQdjhYIFyk
+id: media.image.portrait_2x3
+targetEntityType: media
+bundle: image
+mode: portrait_2x3
+content:
+  field_media_image:
+    label: visually_hidden
+    settings:
+      responsive_image_style: portrait_2x3
+      image_link: ''
+    third_party_settings:
+      lazy:
+        placeholder_style: ''
+        lazy_image: '1'
+        data_uri: false
+    type: lazy_responsive_image
+    weight: 1
+    region: content
+hidden:
+  created: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

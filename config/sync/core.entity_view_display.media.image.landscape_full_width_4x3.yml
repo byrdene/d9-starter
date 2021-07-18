@@ -1,0 +1,39 @@
+uuid: 3777b4b3-df5b-4d0c-907f-4b9716812491
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.landscape_full_width_4x3
+    - field.field.media.image.field_media_image
+    - lazy.settings
+    - media.type.image
+    - responsive_image.styles.landscape_full_width_4x3
+  module:
+    - lazy
+    - responsive_image
+_core:
+  default_config_hash: zOx8yIUUw7E8CdRU3gccEG9bpAXZK1_0KZwWVYNbqjM
+id: media.image.landscape_full_width_4x3
+targetEntityType: media
+bundle: image
+mode: landscape_full_width_4x3
+content:
+  field_media_image:
+    label: visually_hidden
+    settings:
+      responsive_image_style: landscape_full_width_4x3
+      image_link: ''
+    third_party_settings:
+      lazy:
+        placeholder_style: ''
+        lazy_image: '1'
+        data_uri: false
+    type: lazy_responsive_image
+    weight: 1
+    region: content
+hidden:
+  created: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

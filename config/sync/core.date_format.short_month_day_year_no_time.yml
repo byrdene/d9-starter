@@ -1,0 +1,10 @@
+uuid: dc89b37a-64c1-4946-b559-c8fc5c69c938
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: Md6jyum9K913RpI0GVdVdxeHIc7wce16Uf2V3gfcNyI
+id: short_month_day_year_no_time
+label: 'Short Month, Day, Year - no time'
+locked: false
+pattern: 'M j, Y'

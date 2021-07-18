@@ -1,0 +1,16 @@
+uuid: 8a1166ad-5085-4f46-8555-7850637c5e43
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+_core:
+  default_config_hash: Ygya0-gQMZLatu7-1-5oIXEj08DRbqHZBD5X_S19W5Y
+id: user
+label: User
+type: 'canonical_entities:user'
+pattern: 'users/[user:account-name]'
+selection_criteria: {  }
+selection_logic: and
+weight: 0
+relationships: {  }
