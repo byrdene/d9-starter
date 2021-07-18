@@ -6,7 +6,7 @@ with our default installation settings and local development files.
 ## Installation Instructions
 
 1. Move the provided files and directories into the project root:
-    * `config/`
+    * `config/` (config/sync should start empty)
     * `scripts/`
     * `profiles/zaldomoh_profile/`
     * `modules/custom/`
