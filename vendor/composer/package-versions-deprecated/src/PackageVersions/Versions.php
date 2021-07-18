@@ -106,6 +106,7 @@ final class Versions
   'drupal/honeypot' => '2.0.1@2.0.1',
   'drupal/inline_entity_form' => '1.0.0-rc9@8.x-1.0-rc9',
   'drupal/jquery_ui' => '1.4.0@8.x-1.4',
+  'drupal/jquery_ui_accordion' => '1.1.0@8.x-1.1',
   'drupal/jquery_ui_checkboxradio' => '1.2.0@8.x-1.2',
   'drupal/jquery_ui_datepicker' => '1.1.0@8.x-1.1',
   'drupal/jquery_ui_slider' => '1.1.0@8.x-1.1',
@@ -290,7 +291,7 @@ final class Versions
   'symfony/lock' => 'v4.4.23@0859e744a614e96260949f10d9ac4b8adc8cdd0f',
   'symfony/phpunit-bridge' => 'v5.2.9@ea24e42c1ee04792f5d814da6f0814b20ece2907',
   'theseer/tokenizer' => '1.2.0@75a63c33a8577608444246075ea0af0d052e452a',
-  'drupal/recommended-project' => 'dev-master@445c314d07e6685c6f4aff76dc5f945fc752e5e0',
+  'drupal/recommended-project' => 'dev-master@4ff008ece3a047b4446798160633c8bed0df1354',
 );
 
     private function __construct()

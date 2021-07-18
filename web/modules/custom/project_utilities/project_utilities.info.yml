@@ -1,5 +1,5 @@
-name: Theory One Design general customizations
+name: General project customizations
 type: module
-description: Customizations to every Theory One Design Drupal 8 build.
+description: General project customizations
 core_version_requirement: ^8.8.0 || ^9.0
 package: Custom
