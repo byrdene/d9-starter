@@ -34,22 +34,22 @@ function zaldomoh_profile_install() {
   // menu links are valid.
   \Drupal::service('router.builder')->rebuildIfNeeded();
 
-  // Populate the default shortcut set.
-  $shortcut = Shortcut::create([
-    'shortcut_set' => 'default',
-    'title' => t('Add content'),
-    'weight' => -20,
-    'link' => ['uri' => 'internal:/node/add'],
-  ]);
-  $shortcut->save();
-
-  $shortcut = Shortcut::create([
-    'shortcut_set' => 'default',
-    'title' => t('All content'),
-    'weight' => -19,
-    'link' => ['uri' => 'internal:/admin/content'],
-  ]);
-  $shortcut->save();
+//  // Populate the default shortcut set.
+//  $shortcut = Shortcut::create([
+//    'shortcut_set' => 'default',
+//    'title' => t('Add content'),
+//    'weight' => -20,
+//    'link' => ['uri' => 'internal:/node/add'],
+//  ]);
+//  $shortcut->save();
+//
+//  $shortcut = Shortcut::create([
+//    'shortcut_set' => 'default',
+//    'title' => t('All content'),
+//    'weight' => -19,
+//    'link' => ['uri' => 'internal:/admin/content'],
+//  ]);
+//  $shortcut->save();
 
   // Allow all users to use search.
   user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, ['search content']);
