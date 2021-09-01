@@ -12,7 +12,7 @@ bundle: document
 mode: default
 content:
   field_media_document:
-    label: visually_hidden
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: file_default
