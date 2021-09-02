@@ -71,8 +71,6 @@ install:
   - entity_reference_revisions
   - entity_type_clone
   - environment_indicator
-  - features
-  - features_ui
   - field_group
   - focal_point
   - gin_toolbar
