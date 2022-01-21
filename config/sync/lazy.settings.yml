@@ -1,3 +1,5 @@
+_core:
+  default_config_hash: 7dr9Wxtr_LK-lvbJhaO9HyXQQPiTcLCpSzlpRWz6XiM
 skipClass: no-lazy
 disable_admin: true
 visibility:
@@ -32,5 +34,3 @@ lazysizes:
 image_fields: {  }
 alter_tag: {  }
 formatters: {  }
-_core:
-  default_config_hash: 7dr9Wxtr_LK-lvbJhaO9HyXQQPiTcLCpSzlpRWz6XiM

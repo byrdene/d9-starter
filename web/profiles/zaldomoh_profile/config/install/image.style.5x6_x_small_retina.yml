@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: 5x6_x_small_retina
+label: '5:6 X-Small Retina (720 x 872)'
+effects:
+  3da88381-bec6-4c06-8cfb-9fbeba5e63ad:
+    uuid: 3da88381-bec6-4c06-8cfb-9fbeba5e63ad
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 720
+      height: 872
+      crop_type: focal_point
+pipeline: __default__

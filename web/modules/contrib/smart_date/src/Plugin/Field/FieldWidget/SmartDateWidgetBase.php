@@ -15,6 +15,7 @@ use Drupal\datetime\Plugin\Field\FieldWidget\DateTimeWidgetBase;
 use Drupal\datetime_range\Plugin\Field\FieldWidget\DateRangeWidgetBase;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\smart_date\Plugin\Field\FieldType\SmartDateListItemBase;
+use Drupal\smart_date\SmartDateTrait;
 use Drupal\smart_date_recur\Entity\SmartDateRule;
 
 /**
@@ -95,17 +96,20 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
       // TODO: more elegant way to handle hiding recurring instances?
       if ($allow_recurring && $items[$delta]->rrule) {
         $rrule = SmartDateRule::load($items[$delta]->rrule);
-        if ($rrule && isset($form['#rules_processed'][$items[$delta]->rrule])) {
-          // Not the first instance, so skip this delta.
-          $element['#access'] = FALSE;
-          return $element;
-        }
-        else {
-          // Keep track of this rule as having been processed.
-          $form['#rules_processed'][$items[$delta]->rrule] = $items[$delta]->rrule;
-          $items[$delta]->value = (int) $rrule->start->getString();
-          $items[$delta]->end_value = (int) $rrule->end->getString();
-          $items[$delta]->duration = ($items[$delta]->end_value - $items[$delta]->value) / 60;
+        // TODO: log nonexistent rrule values?
+        if ($rrule) {
+          if (isset($form['#rules_processed'][$items[$delta]->rrule])) {
+            // Not the first instance, so skip this delta.
+            $element['#access'] = FALSE;
+            return $element;
+          }
+          else {
+            // Keep track of this rule as having been processed.
+            $form['#rules_processed'][$items[$delta]->rrule] = $items[$delta]->rrule;
+            $items[$delta]->value = (int) $rrule->start->getString();
+            $items[$delta]->end_value = (int) $rrule->end->getString();
+            $items[$delta]->duration = ($items[$delta]->end_value - $items[$delta]->value) / 60;
+          }
         }
       }
       $defaults = $this->fieldDefinition->getDefaultValueLiteral()[0];
@@ -119,13 +123,13 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
       if ($items[$delta]->start_date) {
         /** @var \Drupal\Core\Datetime\DrupalDateTime $start_date */
         $start_date = $items[$delta]->start_date;
-        $values['start'] = $this->createDefaultValue($start_date, $element['value']['#date_timezone']);
+        $values['start'] = $this->createNormalizedDefaultValue($start_date, $element['value']['#date_timezone']);
       }
 
       if ($items[$delta]->end_date) {
         /** @var \Drupal\Core\Datetime\DrupalDateTime $end_date */
         $end_date = $items[$delta]->end_date;
-        $values['end'] = $this->createDefaultValue($end_date, $element['value']['#date_timezone']);
+        $values['end'] = $this->createNormalizedDefaultValue($end_date, $element['value']['#date_timezone']);
       }
       if (!empty($start_date) && !empty($end_date)) {
         $intervalFormatter = DrupalDateTime::createFromTimestamp(0);
@@ -166,7 +170,7 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
     if (empty($defaults)) {
       $defaults = [
         'default_duration_increments' => "30\n60|1 hour\n90\n120|2 hours\ncustom",
-        'default_duration' => '60',
+        'default_duration' => 60,
       ];
     }
     // Wrap all of the select elements with a fieldset.
@@ -227,7 +231,7 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
       }
       else {
         // TODO: throw some kind of error/warning if invalid duration?
-        $default_duration = '';
+        $default_duration = 0;
       }
     }
     $element['duration'] = [
@@ -258,6 +262,7 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
    * {@inheritdoc}
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+    $site_tz_name = \Drupal::config('system.date')->get('timezone.default');
 
     // The widget form element type has transformed the value to a
     // DrupalDateTime object at this point. We need to convert it back to the
@@ -273,7 +278,21 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
       if (!empty($item['timezone'])) {
         $timezone = new \DateTimezone($item['timezone']);
       }
-      if (!empty($item['value']) && $item['value'] instanceof DrupalDateTime) {
+      if (!empty($item['value']) && $item['value'] instanceof DrupalDateTime && $item['end_value'] instanceof DrupalDateTime) {
+        if (!$timezone) {
+          $value_tz = $item['value']->getTimezone();
+          $value_tz_name = $value_tz->getName();
+          if (SmartDateTrait::isAllDay(
+            $item['value']->getTimestamp(),
+            $item['end_value']->getTimestamp(),
+            $value_tz_name
+          ) && $value_tz_name != $site_tz_name) {
+            // Make sure all day events explicitly save timezone if different
+            // from the site.
+            $timezone = $value_tz;
+            $item['timezone'] = $value_tz_name;
+          }
+        }
         // Adjust the date for storage.
         $item['value'] = $this->smartGetTimestamp($item['value'], $timezone);
       }
@@ -541,6 +560,26 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
       }
     }
     return $elements;
+  }
+
+  /**
+   * Creates a default value with the seconds set to zero.
+   *
+   * @param mixed $date
+   *   The configured default.
+   * @param string $timezone
+   *   A configured timezone for the field, if set.
+   *
+   * @return \Drupal\Core\Datetime\DrupalDateTime
+   *   A date object for use as a default value in a field widget.
+   */
+  protected function createNormalizedDefaultValue($date, $timezone) {
+    $date = $this->createDefaultValue($date, $timezone);
+
+    // Resert seconds, so they will always fall on :00.
+    $date->sub(new \DateInterval('PT' . $date->format('s') . 'S'));
+
+    return $date;
   }
 
 }

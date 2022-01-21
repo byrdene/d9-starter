@@ -107,9 +107,10 @@ class CheckCommand extends Command
             }
         }
 
-        $drupalFinder->locateRoot($drupalRootCandidate);
-        $this->drupalRoot = realpath($drupalFinder->getDrupalRoot());
-        $this->vendorRoot = realpath($drupalFinder->getVendorDir());
+        if ($drupalFinder->locateRoot($drupalRootCandidate)) {
+            $this->drupalRoot = realpath($drupalFinder->getDrupalRoot());
+            $this->vendorRoot = realpath($drupalFinder->getVendorDir());
+        }
 
         if (!$this->drupalRoot) {
             $output->writeln(sprintf('<error>Unable to locate the Drupal root in %s</error>', $drupalRootCandidate));
@@ -129,7 +130,7 @@ class CheckCommand extends Command
             'parameters' => [
                 'tipsOfTheDay' => false,
                 'reportUnmatchedIgnoredErrors' => false,
-                'excludes_analyse' => [
+                'excludePaths' => [
                     '*/tests/Drupal/Tests/Listeners/Legacy/*',
                     '*/tests/fixtures/*.php',
                     '*/settings*.php',
@@ -145,7 +146,7 @@ class CheckCommand extends Command
         if (!empty($this->excludeDirectory)) {
             // There may be more than one path passed in, comma separated.
             $excluded_directories = explode(',', $this->excludeDirectory);
-            $configuration_data['parameters']['excludes_analyse'] = array_merge($excluded_directories, $configuration_data['parameters']['excludes_analyse']);
+            $configuration_data['parameters']['excludePaths'] = array_merge($excluded_directories, $configuration_data['parameters']['excludePaths']);
         }
 
         if ($this->isAnalysisCheck) {
@@ -190,10 +191,13 @@ class CheckCommand extends Command
             $output->writeln('<comment>Assumed running as local dependency</comment>', OutputInterface::VERBOSITY_DEBUG);
             $phpstanBin = \realpath(__DIR__ . '/../../vendor/phpstan/phpstan/phpstan.phar');
             $configuration_data['parameters']['bootstrapFiles'] = [\realpath(__DIR__ . '/../../error-bootstrap.php')];
-            $configuration_data['includes'] = [
-                \realpath(__DIR__ . '/../../vendor/phpstan/phpstan-deprecation-rules/rules.neon'),
-                \realpath(__DIR__ . '/../../vendor/mglaman/phpstan-drupal/extension.neon'),
-            ];
+            if (!class_exists('PHPStan\ExtensionInstaller\GeneratedConfig')) {
+                $configuration_data['includes'] = [
+                    \realpath(__DIR__ . '/../../vendor/phpstan/phpstan-deprecation-rules/rules.neon'),
+                    \realpath(__DIR__ . '/../../vendor/mglaman/phpstan-drupal/extension.neon'),
+                ];
+            }
+
         } elseif (file_exists(__DIR__ . '/../../../../autoload.php')) {
             // Running as a global dependency.
             $output->writeln('<comment>Assumed running as global dependency</comment>', OutputInterface::VERBOSITY_DEBUG);

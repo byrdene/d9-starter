@@ -6,9 +6,10 @@ dependencies:
 core: 8.x
 core_version_requirement: ^8 || ^9
 type: module
+lifecycle: stable
 package: Search
 
-# Information added by Drupal.org packaging script on 2020-09-07
-version: '8.x-1.4'
+# Information added by Drupal.org packaging script on 2022-01-12
+version: '8.x-1.6'
 project: 'search_api_autocomplete'
-datestamp: 1599485734
+datestamp: 1641998787

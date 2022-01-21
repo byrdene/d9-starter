@@ -40,7 +40,7 @@
       // });
 
       function setEndDate(element) {
-        var wrapper = $(element).closest('fieldset');
+        var wrapper = $(element).closest('.smartdate--widget');
         var duration_select = wrapper.find('select.field-duration');
         if (duration_select.val() === 'custom') {
           var duration = parseInt(duration_select.prop('data-duration'));
@@ -92,7 +92,7 @@
 
       function durationChanged(element) {
         var current_val = $(element).val();
-        var wrapper = $(element).parents('fieldset');
+        var wrapper = $(element).parents('.smartdate--widget');
         var end_time_input = wrapper.find('.time-end.form-time');
         var end_date_input = wrapper.find('.time-end.form-date');
         var end_date_label = wrapper.find('.time-start + .label, .form-datetime-wrapper:nth-child(2) .form-item__label');
@@ -128,7 +128,7 @@
       function setInitialDuration(element) {
         var duration = $(element).val();
         if (duration == 'custom') {
-          var wrapper = $(element).parents('fieldset');
+          var wrapper = $(element).parents('.smartdate--widget');
           var duration = calcDuration(wrapper);
         }
         else if (duration == 0) {
@@ -166,7 +166,7 @@
       }
 
       function setDuration(element) {
-        var wrapper = $(element).parents('fieldset');
+        var wrapper = $(element).parents('.smartdate--widget');
         var duration = calcDuration(wrapper);
         if (duration == 0) {
           return;
@@ -211,7 +211,7 @@
 
       function setAllDay(element) {
         var checkbox = $(element);
-        var wrapper = checkbox.parents('fieldset');
+        var wrapper = checkbox.parents('.smartdate--widget');
         var start_time = wrapper.find('.time-start.form-time');
         var start_time_label = start_time.prev('label');
         var end_time = wrapper.find('.time-end.form-time');
@@ -236,7 +236,7 @@
 
       function checkAllDay(element) {
         var checkbox = $(element);
-        var wrapper = checkbox.parents('fieldset');
+        var wrapper = checkbox.parents('.smartdate--widget');
         var start_time = wrapper.find('input.time-start.form-time');
         var start_time_label = start_time.siblings('label');
         var end_time = wrapper.find('.time-end.form-time');
@@ -308,7 +308,7 @@
       }
 
       function updateRepeatLabel(element) {
-        var wrapper = $(element).parents('fieldset');
+        var wrapper = $(element).parents('.smartdate--widget');
         var repeat_label = wrapper.find('.field-interval + .field-suffix');
         var new_label = '';
         switch ($(element).val()) {

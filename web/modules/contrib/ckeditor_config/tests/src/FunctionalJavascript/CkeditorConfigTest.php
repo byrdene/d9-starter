@@ -27,7 +27,7 @@ class CkeditorConfigTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'ckeditor',
     'ckeditor_config',
     'editor',
@@ -38,7 +38,7 @@ class CkeditorConfigTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Create a node type for testing.

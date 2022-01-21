@@ -1,3 +1,27 @@
+Search API Autocomplete 1.6 (2022-01-12):
+-----------------------------------------
+- #3238635 by drunken monkey, mkalkbrenner: Deprecated
+  AutocompleteBackendInterface in favor of the one in Search API.
+- #3224354 by drunken monkey: Fixed service container error after module
+  upgrade.
+- #3228452 by drunken monkey: Fixed test failures against Drupal 9.3.x.
+- #3226934 by drunken monkey: Fixed some exception handling problems.
+- #3226653 by drunken monkey: Added "lifecycle" key to .info.yml file.
+
+Search API Autocomplete 1.5 (2021-07-19):
+-----------------------------------------
+- #3060211 by FeyP, drunken monkey: Added optional highlighting for the "Live
+  Results" suggester.
+- #3184593 by becassin, drunken monkey: Added search input ID to the
+  suggestions list HTML.
+- #3173401 by drunken monkey: Removed drupalPostForm() calls from functional
+  tests.
+- #3171527 by drunken monkey: Fixed service definitions by removing the leading
+  slash.
+- #3159000 by thomas.hery, drunken monkey: Fixed compatibility with Better
+  Exposed Filters.
+- #3171305 by drunken monkey: Fixed tests on Drupal Core versions before 9.1.
+
 Search API Autocomplete 1.4 (2020-09-07):
 -----------------------------------------
 - #3169391 by drunken monkey: Fixed tests on Drupal 9.

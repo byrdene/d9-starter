@@ -2,9 +2,9 @@
 
 namespace Drupal\smart_date\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\smart_date\SmartDateTrait;
 
 /**
  * Plugin implementation of a duration-based formatter for 'smartdate' fields.
@@ -23,8 +23,6 @@ use Drupal\smart_date\SmartDateTrait;
  */
 class SmartDateDurationFormatter extends SmartDateDefaultFormatter {
 
-  use SmartDateTrait;
-
   /**
    * {@inheritdoc}
    */
@@ -42,8 +40,6 @@ class SmartDateDurationFormatter extends SmartDateDefaultFormatter {
     // timezone.
     $form = parent::settingsForm($form, $form_state);
 
-    // Ask the user to choose a Smart Date Format.
-    $smartDateFormatOptions = $this->getAvailableSmartDateFormatOptions();
     $form['duration_separator'] = [
       '#type' => 'text',
       '#title' => $this->t('Duration Separator'),
@@ -110,6 +106,16 @@ class SmartDateDurationFormatter extends SmartDateDefaultFormatter {
     $add_classes = $this->getSetting('add_classes');
     $time_wrapper = $this->getSetting('time_wrapper');
 
+    // Look for the Date Augmenter plugin manager service.
+    $augmenters = [];
+    if (!empty(\Drupal::hasService('plugin.manager.dateaugmenter'))) {
+      $dateAugmenterManager = \Drupal::service('plugin.manager.dateaugmenter');
+      // TODO: Support custom entities.
+      $config = $this->getThirdPartySettings('date_augmenter');
+      $augmenters = $dateAugmenterManager->getActivePlugins($config);
+      $entity = $items->getEntity();
+    }
+
     foreach ($items as $delta => $item) {
       if ($field_type == 'smartdate') {
         $timezone = $item->timezone ? $item->timezone : $timezone_override;
@@ -175,6 +181,29 @@ class SmartDateDurationFormatter extends SmartDateDefaultFormatter {
           '#attributes' => ['datetime' => $this->formatDurationTime($diff)],
           '#text' => $current_contents,
         ];
+      }
+
+      if ($augmenters) {
+        foreach ($augmenters as $augmenter_id => $augmenter) {
+          // Use the enabled plugin to manipulate the output.
+          $augmenter->augmentOutput(
+            // The existing render array.
+            $elements[$delta],
+            // The start and end (optional), as DrupalDateTime objects.
+            DrupalDateTime::createFromTimestamp($start_ts),
+            DrupalDateTime::createFromTimestamp($end_ts),
+            // An optional array of additional parameters.
+            [
+              'timezone' => $timezone,
+              'allday' => static::isAllDay($start_ts, $end_ts, $timezone),
+              'entity' => $entity,
+              'settings' => $config['settings'][$augmenter_id],
+              'delta' => $delta,
+              'formatter' => $this,
+              'field_name' => $this->fieldDefinition->getName(),
+            ]
+          );
+        }
       }
 
       if (!empty($item->_attributes)) {

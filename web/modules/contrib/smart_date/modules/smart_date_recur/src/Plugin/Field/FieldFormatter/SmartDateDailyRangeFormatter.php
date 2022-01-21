@@ -2,6 +2,7 @@
 
 namespace Drupal\smart_date_recur\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\smart_date\Entity\SmartDateFormat;
@@ -75,6 +76,17 @@ class SmartDateDailyRangeFormatter extends SmartDateDefaultFormatter {
     $time_wrapper = $this->getSetting('time_wrapper');
     $rrules = [];
     $rrules_nondaily = [];
+
+    // Look for the Date Augmenter plugin manager service.
+    $augmenters = [];
+    if (!empty(\Drupal::hasService('plugin.manager.dateaugmenter'))) {
+      $dateAugmenterManager = \Drupal::service('plugin.manager.dateaugmenter');
+      // TODO: Support custom entities.
+      $config = $this->getThirdPartySettings('date_augmenter');
+      $augmenters = $dateAugmenterManager->getActivePlugins($config);
+      $entity = $items->getEntity();
+    }
+
     foreach ($items as $delta => $item) {
       $timezone = $item->timezone ? $item->timezone : NULL;
       if (empty($item->value) || empty($item->end_value)) {
@@ -130,6 +142,29 @@ class SmartDateDailyRangeFormatter extends SmartDateDefaultFormatter {
         }
         if ($time_wrapper) {
           $this->addTimeWrapper($elements[$delta], $item->value, $item->end_value, $timezone);
+        }
+
+        if ($augmenters) {
+          foreach ($augmenters as $augmenter_id => $augmenter) {
+            // Use the enabled plugin to manipulate the output.
+            $augmenter->augmentOutput(
+              // The existing render array.
+              $elements[$delta],
+              // The start and end (optional), as DrupalDateTime objects.
+              DrupalDateTime::createFromTimestamp($item->value),
+              DrupalDateTime::createFromTimestamp($item->end_value),
+              // An optional array of additional parameters.
+              [
+                'timezone' => $timezone,
+                'allday' => static::isAllDay($item->value, $item->end_value, $timezone),
+                'entity' => $entity,
+                'settings' => $config['settings'][$augmenter_id],
+                'delta' => $delta,
+                'formatter' => $this,
+                'field_name' => $this->fieldDefinition->getName(),
+              ]
+            );
+          }
         }
       }
     }

@@ -19,18 +19,10 @@ use Drupal\smart_date_recur\Entity\SmartDateRule;
 function smart_date_recur_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.smart_date_recur':
-      if (\Drupal::moduleHandler()->moduleExists('field_ui')) {
-        $field_ui_link = Url::fromRoute('help.page', ['name' => 'field_ui']);
-      }
-      else {
-        $field_ui_link = '#';
-      }
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('The Smart Date Recur module adds recurring date functionality to Smart Date fields. For more information, see the <a href=":datetime_do">online documentation for the Smart Date module</a>.', [
-        ':field' => Url::fromRoute('help.page', ['name' => 'field']),
-        ':field_ui' => $field_ui_link,
-        ':datetime_do' => 'https://www.drupal.org/documentation/modules/smart_date',
+        ':datetime_do' => 'https://www.drupal.org/docs/contributed-modules/smart-date',
       ]) . '</p>';
       return $output;
   }
@@ -562,7 +554,9 @@ function smart_date_recur_generate_rows(&$values, $entity_type, $bundle, $field_
       if (!empty($item['rrule'])) {
         // Removed an existing reoccurrence, so delete.
         $rrule = SmartDateRule::load($item['rrule']);
-        $rrule->delete();
+	if ($rrule) {
+          $rrule->delete();
+        }
         $item['rrule'] = NULL;
       }
       continue;

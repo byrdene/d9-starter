@@ -69,40 +69,16 @@ field.formatter.settings.smartdate_default:
       translation context: 'Smart date display'
 
 field.formatter.settings.smartdate_duration:
-  type: field.formatter.settings.smartdate_duration
+  type: field.formatter.settings.smartdate_default
   label: 'Smart date duration display format settings'
   mapping:
-    timezone_override:
-      type: string
-      label: 'Time zone override'
-      translation context: 'Smart date display'
-    format:
-      type: string
-      label: 'Format'
-      translation context: 'Smart date display'
-    force_chronological:
-      type: boolean
-      label: 'Force chronological'
-      translation context: 'Smart date display'
-    format_type:
-      type: string
-      label: 'Format Type'
-      translation context: 'Smart date display'
-    add_classes:
-      type: boolean
-      label: 'Add Classes'
-      translation context: 'Smart date display'
-    time_wrapper:
-      type: boolean
-      label: 'Add time wrapper'
-      translation context: 'Smart date display'
     duration_separator:
       type: string
       label: 'Duration Separator'
       translation context: 'Smart date display'
 
 field.formatter.settings.smartdate_plain:
-  type: field.formatter.settings.datetime_plain
+  type: field.formatter.settings.datetime_base
   label: 'Smart date plain display format settings'
   mapping:
     separator:
@@ -111,7 +87,7 @@ field.formatter.settings.smartdate_plain:
       translation context: 'Smart date display'
 
 field.formatter.settings.smartdate_custom:
-  type: field.formatter.settings.datetime_custom
+  type: field.formatter.settings.datetime_base
   label: 'Smart date custom display format settings'
   mapping:
     separator:

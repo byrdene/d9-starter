@@ -10,7 +10,15 @@ id: basic_page
 label: 'Basic Page'
 type: 'canonical_entities:node'
 pattern: '[node:menu-link:parents:join-path]/[node:title]'
-selection_criteria: {  }
+selection_criteria:
+  2240e257-bab3-4e64-b9a9-e8278fd3f1f0:
+    id: node_type
+    negate: false
+    uuid: 2240e257-bab3-4e64-b9a9-e8278fd3f1f0
+    context_mapping:
+      node: node
+    bundles:
+      page: page
 selection_logic: and
 weight: 0
 relationships: {  }

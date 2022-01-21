@@ -123,8 +123,8 @@ class SmartDateProcessor extends FullcalendarViewProcessorBase {
       $entry['allDay'] = TRUE;
     }
     else {
-      $entry['start'] = date(DATE_ATOM, $start);
-      $entry['end'] = date(DATE_ATOM, $end);
+      $entry['start'] = date('Y-m-d\TH:i:s', $start);
+      $entry['end'] = date('Y-m-d\TH:i:s', $end);
       $entry['allDay'] = FALSE;
     }
     // Append the id with necessary additional data.

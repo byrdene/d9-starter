@@ -132,7 +132,7 @@ class SmartDateRule extends ContentEntityBase {
     $end = $this->get('limit')->getString();
     if (!empty($end)) {
       $rule .= ';' . $end;
-      if (strpos($end, 'UNTIL') === 0 && strpos($end, 'T') === FALSE) {
+      if (strpos($end, 'UNTIL') === 0 && strpos($end, 'T', 4) === FALSE) {
         // Add midnight to specify the end of the last day.
         $rule .= 'T235959';
       }

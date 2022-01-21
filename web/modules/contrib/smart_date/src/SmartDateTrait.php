@@ -2,6 +2,7 @@
 
 namespace Drupal\smart_date;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\smart_date\Entity\SmartDateFormatInterface;
 
@@ -42,6 +43,16 @@ trait SmartDateTrait {
     $add_classes = $this->getSetting('add_classes');
     $time_wrapper = $this->getSetting('time_wrapper');
 
+    // Look for the Date Augmenter plugin manager service.
+    $augmenters = [];
+    if (!empty(\Drupal::hasService('plugin.manager.dateaugmenter'))) {
+      $dateAugmenterManager = \Drupal::service('plugin.manager.dateaugmenter');
+      // TODO: Support custom entities.
+      $config = $this->getThirdPartySettings('date_augmenter');
+      $augmenters = $dateAugmenterManager->getActivePlugins($config);
+      $entity = $items->getEntity();
+    }
+
     foreach ($items as $delta => $item) {
       if ($field_type == 'smartdate') {
         if (empty($item->value) || empty($item->end_value)) {
@@ -51,11 +62,21 @@ trait SmartDateTrait {
         $end_ts = $item->end_value;
       }
       elseif ($field_type == 'daterange') {
-        if (empty($item->start_date) || empty($item->end_date)) {
+        // Start and end dates are optional, but one of them is required
+        // to display anything regardless of what the field thinks.
+        if ($item->isEmpty() || (empty($item->start_date) && empty($item->end_date))) {
           continue;
         }
-        $start_ts = $item->start_date->getTimestamp();
-        $end_ts = $item->end_date->getTimestamp();
+        elseif (empty($item->start_date)) {
+          $start_ts = $end_ts = $item->end_date->getTimestamp();
+        }
+        elseif (empty($item->end_date)) {
+          $start_ts = $end_ts = $item->start_date->getTimestamp();
+        }
+        else {
+          $start_ts = $item->start_date->getTimestamp();
+          $end_ts = $item->end_date->getTimestamp();
+        }
       }
       elseif ($field_type == 'datetime') {
         if (empty($item->date)) {
@@ -79,7 +100,7 @@ trait SmartDateTrait {
         $this->addRangeClasses($elements[$delta]);
       }
       if ($time_wrapper) {
-        $this->addTimeWrapper($elements[$delta], $start_ts, $end_ts, $timezone);
+        $this->addTimeWrapper($elements[$delta], $start_ts, $end_ts, $timezone, $add_classes);
       }
       // Attach the timestamps in case they're needed for later processing.
       $elements[$delta]['#value'] = $start_ts;
@@ -115,6 +136,29 @@ trait SmartDateTrait {
         // formatter output and should not be rendered in the field template.
         unset($item->_attributes);
       }
+
+      if ($augmenters) {
+        foreach ($augmenters as $augmenter_id => $augmenter) {
+          // Use the enabled plugin to manipulate the output.
+          $augmenter->augmentOutput(
+            // The existing render array.
+            $elements[$delta],
+            // The start and end (optional), as DrupalDateTime objects.
+            DrupalDateTime::createFromTimestamp($start_ts),
+            DrupalDateTime::createFromTimestamp($end_ts),
+            // An optional array of additional parameters.
+            [
+              'timezone' => $timezone,
+              'allday' => static::isAllDay($start_ts, $end_ts, $timezone),
+              'entity' => $entity,
+              'settings' => $config['settings'][$augmenter_id],
+              'delta' => $delta,
+              'formatter' => $this,
+              'field_name' => $this->fieldDefinition->getName(),
+            ]
+          );
+        }
+      }
     }
 
     // If specified, sort based on start, end times.
@@ -126,38 +170,46 @@ trait SmartDateTrait {
   }
 
   /**
+   * Explicitly declare support for the Date Augmenter API.
+   *
+   * @return bool
+   *   Return TRUE to declare support.
+   */
+  public function supportsDateAugmenter() {
+    // Could have conditional logic here.
+    return TRUE;
+  }
+
+  /**
    * Add spans provides classes to allow the dates and times to be styled.
    *
    * @param array $instance
    *   The render array of the formatted date range.
    */
-  private function addRangeClasses(array &$instance) {
-    if (isset($instance['start']) && isset($instance['start']['date']) && $instance['start']['date']) {
-      $instance['start']['date']['#prefix'] = '<span class="smart-date--date">';
-      $instance['start']['date']['#suffix'] = '</span>';
+  protected function addRangeClasses(array &$instance) {
+    // Array to define where wrapper parts should be skipped, for a range.
+    $skip = [];
+    // If a time range within a day, make a single wrapper around the times.
+    if ((isset($instance['start']['date']) xor isset($instance['end']['date'])) && isset($instance['start']['time'], $instance['end']['time'])) {
+      $skip['start']['time']['#suffix'] = TRUE;
+      $skip['end']['time']['#prefix'] = TRUE;
     }
-    if (isset($instance['start']) && isset($instance['start']['time']) && $instance['start']['time']) {
-      $instance['start']['time']['#prefix'] = '<span class="smart-date--time">';
-      $instance['start']['time']['#suffix'] = '</span>';
+    // For a date only range, make a single wrapper.
+    elseif (isset($instance['start']['date'], $instance['end']['date']) && (!isset($instance['start']['time']) || !isset($instance['end']['time']))) {
+      $skip['start']['date']['#suffix'] = TRUE;
+      $skip['end']['date']['#prefix'] = TRUE;
     }
-    if (isset($instance['end']) && isset($instance['end']['date']) && $instance['end']['date']) {
-      $instance['end']['date']['#suffix'] = '</span>';
-      if (isset($instance['start']) && isset($instance['start']['date']) && $instance['start']['date']) {
-        // Range, so put span around the full range.
-        $instance['start']['date']['#suffix'] = '';
-      }
-      else {
-        $instance['end']['date']['#prefix'] = '<span class="smart-date--date">';
-      }
-    }
-    if (isset($instance['end']) && isset($instance['end']['time']) && $instance['end']['time']) {
-      $instance['end']['time']['#suffix'] = '</span>';
-      if (isset($instance['start']) && isset($instance['start']['time']) && $instance['start']['time']) {
-        // Range, so put span around the full range.
-        $instance['start']['time']['#suffix'] = '';
-      }
-      else {
-        $instance['end']['time']['#prefix'] = '<span class="smart-date--time">';
+    // Wrap all parts by default.
+    foreach (['start', 'end'] as $part) {
+      foreach (['date', 'time'] as $subpart) {
+        if (isset($instance[$part][$subpart]) && $instance[$part][$subpart]) {
+          if (!isset($skip[$part][$subpart]['#prefix'])) {
+            $instance[$part][$subpart]['#prefix'] = '<span class="smart-date--' . $subpart . '">';
+          }
+          if (!isset($skip[$part][$subpart]['#suffix'])) {
+            $instance[$part][$subpart]['#suffix'] = '</span>';
+          }
+        }
       }
     }
   }
@@ -173,12 +225,21 @@ trait SmartDateTrait {
    *   A timestamp.
    * @param string|null $timezone
    *   An optional timezone override.
+   * @param bool $add_classes
+   *   Whether or not the field is also adding class wrappers.
    */
-  private function addTimeWrapper(array &$instance, $start_ts, $end_ts, $timezone = NULL) {
+  protected function addTimeWrapper(array &$instance, $start_ts, $end_ts, $timezone = NULL, $add_classes = FALSE) {
     $times = [
       'start' => $start_ts,
       'end' => $end_ts,
     ];
+    // Only add the time wrappers inside if there is an incomplete range part.
+    if ((isset($instance['start']['date']) xor isset($instance['start']['time'])) || (isset($instance['end']['date']) xor isset($instance['end']['time']))) {
+      $inner_wrappers = TRUE;
+    }
+    else {
+      $inner_wrappers = FALSE;
+    }
     foreach (['start', 'end'] as $part) {
       if (isset($instance[$part])) {
         if ($this->isAllDay($start_ts, $end_ts, $timezone)) {
@@ -188,12 +249,34 @@ trait SmartDateTrait {
           $format = 'c';
         }
         $datetime = \Drupal::service('date.formatter')->format($times[$part], 'custom', $format);
-        $current_contents = $instance[$part];
-        $instance[$part] = [
-          '#theme' => 'time',
-          '#attributes' => ['datetime' => $datetime],
-          '#text' => $current_contents,
-        ];
+        if ($add_classes && $inner_wrappers) {
+          // If wrappers for classes have also been added, we need separate
+          // time elements for the date and time, if set.
+          foreach (['date', 'time'] as $subpart) {
+            if (isset($instance[$part][$subpart]) && $instance[$part][$subpart]) {
+              $current_contents = $instance[$part][$subpart];
+              unset($current_contents['#prefix']);
+              unset($current_contents['#suffix']);
+              $prefix = isset($instance[$part][$subpart]['#prefix']) ? $instance[$part][$subpart]['#prefix'] : NULL;
+              $suffix = isset($instance[$part][$subpart]['#suffix']) ? $instance[$part][$subpart]['#suffix'] : NULL;
+              $instance[$part][$subpart] = [
+                '#theme' => 'time',
+                '#attributes' => ['datetime' => $datetime],
+                '#text' => $current_contents,
+                '#prefix' => $prefix,
+                '#suffix' => $suffix,
+              ];
+            }
+          }
+        }
+        else {
+          $current_contents = $instance[$part];
+          $instance[$part] = [
+            '#theme' => 'time',
+            '#attributes' => ['datetime' => $datetime],
+            '#text' => $current_contents,
+          ];
+        }
       }
     }
   }
@@ -261,6 +344,11 @@ trait SmartDateTrait {
     }
     if ($timezone) {
       date_default_timezone_set($timezone);
+      $tz_check = $timezone;
+    }
+    else {
+      // If no timezone set, make sure we use site default for check.
+      $tz_check = \Drupal::config('system.date')->get('timezone.default');
     }
     $temp_start = date('H:i', $start_ts);
     $temp_end = date('H:i', $end_ts);
@@ -285,7 +373,7 @@ trait SmartDateTrait {
       }
     }
     // Check for an all-day range.
-    if (static::isAllDay($start_ts, $end_ts, $timezone)) {
+    if (static::isAllDay($start_ts, $end_ts, $tz_check)) {
       if ($settings['allday_label']) {
         if (($settings['date_first'] && isset($range['end']['date'])) || empty($range['start']['date'])) {
           $range['end']['time'] = $settings['allday_label'];
@@ -397,7 +485,7 @@ trait SmartDateTrait {
    * @return string|array
    *   The range, with duplicate elements removed.
    */
-  private static function rangeDateReduce(array $range, array $settings, $start_ts, $end_ts, $timezone = NULL) {
+  protected static function rangeDateReduce(array $range, array $settings, $start_ts, $end_ts, $timezone = NULL) {
     // First attempt has the following limitations, to reduce complexity:
     // * Day ranges only work either d or j, and no other day tokens.
     // * Not able to handle S token unless adjacent to day.
@@ -489,7 +577,7 @@ trait SmartDateTrait {
    * @return string|array
    *   The formatted range.
    */
-  private static function rangeFormat(array $range, array $settings, $return_type = '') {
+  protected static function rangeFormat(array $range, array $settings, $return_type = '') {
     // If a string is requested, return that.
     if ($return_type == 'string') {
       $pieces = [];
@@ -540,7 +628,7 @@ trait SmartDateTrait {
    * @return array
    *   The nested render array.
    */
-  private static function arrayToRender(array $array) {
+  protected static function arrayToRender(array $array) {
     if (!is_array($array)) {
       return FALSE;
     }
@@ -575,7 +663,7 @@ trait SmartDateTrait {
    * @return string
    *   The formatted time.
    */
-  private static function timeFormat($time, array $settings, $timezone = NULL, $is_start = FALSE) {
+  protected static function timeFormat($time, array $settings, $timezone = NULL, $is_start = FALSE) {
     $format = $settings['time_format'];
     if (!empty($settings['time_hour_format']) && date('i', $time) == '00') {
       $format = $settings['time_hour_format'];

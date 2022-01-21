@@ -38,8 +38,6 @@ settings:
       linkit_profile: default
     language:
       language_list: un
-    customconfig:
-      ckeditor_custom_config: "forcePasteAsPlainText = true\r\nautoGrow_minHeight = 100\r\nautoGrow_onStartup  =  true"
 image_upload:
   status: false
   scheme: public

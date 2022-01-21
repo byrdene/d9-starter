@@ -1,0 +1,21 @@
+uuid: 6fbf3bc4-52c1-4b61-a46c-2e2086805259
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - viewfield
+    - views
+id: node.field_related_view
+field_name: field_related_view
+entity_type: node
+type: viewfield
+settings:
+  target_type: view
+module: viewfield
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

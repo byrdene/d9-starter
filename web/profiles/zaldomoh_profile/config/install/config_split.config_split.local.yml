@@ -4,6 +4,7 @@ dependencies: {  }
 id: local
 label: Local
 description: ''
+weight: 0
 folder: ../config/splits/local
 module:
   composer_deploy: 0
@@ -18,4 +19,3 @@ blacklist: {  }
 graylist: {  }
 graylist_dependents: true
 graylist_skip_equal: true
-weight: 0

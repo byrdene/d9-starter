@@ -1,0 +1,18 @@
+uuid: 43e9a37d-ccbc-48ab-aaa5-35b3e52df4aa
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: 5x6_small
+label: '5:6 Small (640 x 768)'
+effects:
+  e78df3ca-1ebc-48c2-b262-6d1d73c3fd8a:
+    uuid: e78df3ca-1ebc-48c2-b262-6d1d73c3fd8a
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 640
+      height: 768
+      crop_type: focal_point
+pipeline: __default__

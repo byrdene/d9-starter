@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace PHPStan\Rules\Deprecations;
+namespace mglaman\PHPStanDrupal\Rules\Deprecations;
 
 use PhpParser\Node;
 use PHPStan\Analyser\Scope;
@@ -41,6 +41,15 @@ abstract class DeprecatedAnnotationsRuleBase implements Rule
             return [];
         }
         if ($node->name === null) {
+            return [];
+        }
+        if ($node->isAbstract()) {
+            return [];
+        }
+        // PHPStan gives anonymous classes a name, so we cannot determine if
+        // a class is truly anonymous using the normal methods from php-parser.
+        // @see \PHPStan\Reflection\BetterReflection\BetterReflectionProvider::getAnonymousClassReflection
+        if ($node->hasAttribute('anonymousClass') && $node->getAttribute('anonymousClass') === true) {
             return [];
         }
         $className = $node->name->name;

@@ -27,6 +27,7 @@ class SmartDateTimezoneWidget extends SmartDateDefaultWidget implements Containe
       'default_tz' => '',
       'custom_tz' => '',
       'allowed_timezones' => [],
+      'add_abbreviations' => '',
     ] + parent::defaultSettings();
   }
 
@@ -52,7 +53,15 @@ class SmartDateTimezoneWidget extends SmartDateDefaultWidget implements Containe
         break;
     }
 
-    $timezones = $this->getSetting('allowed_timezones') ? $this->formatTimezoneOptions($this->getSetting('allowed_timezones')) : $this->getTimezones();
+    if ($this->getSetting('allowed_timezones')) {
+      $timezones = $this->formatTimezoneOptions($this->getSetting('allowed_timezones'));
+    }
+    elseif ($this->getSetting('add_abbreviations')) {
+      $timezones = $this->formatTimezoneOptions($this->getTimezones(FALSE));
+    }
+    else {
+      $timezones = $this->getTimezones();
+    }
 
     $element['timezone']['#type'] = 'select';
     $element['timezone']['#options'] = ['' => $default_label] + $timezones;
@@ -79,6 +88,18 @@ class SmartDateTimezoneWidget extends SmartDateDefaultWidget implements Containe
         '' => $this->t('Site default (ignores any user override)'),
         'user' => $this->t("User's timezone, defaulting to site (always saved)"),
         'custom' => $this->t('A custom timezone (always saved)'),
+      ],
+    ];
+
+    $element['add_abbreviations'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Add abbreviations'),
+      '#description' => $this->t('Optionally add the time abbreviations.'),
+      '#default_value' => $this->getSetting('add_abbreviations'),
+      '#options' => [
+        '' => $this->t('Never'),
+        'before' => $this->t('Before the name'),
+        'after' => $this->t('After the name'),
       ],
     ];
 
@@ -154,17 +175,23 @@ class SmartDateTimezoneWidget extends SmartDateDefaultWidget implements Containe
   /**
    * Helper function to retrieve available timezones.
    */
-  public function getTimezones() {
-    return system_time_zones(FALSE, TRUE);
+  public function getTimezones($grouped = TRUE) {
+    return system_time_zones(FALSE, $grouped);
   }
 
   /**
    * Helper function to format allowed timezone as a grouped list.
    */
   public function formatTimezoneOptions(array $zonelist, $grouped = TRUE) {
+    $prepend = '';
+    $append = '';
+    $add_abbr = $this->getSetting('add_abbreviations');
+
     $zones = [];
     foreach ($zonelist as $zone) {
-
+      if (!is_string($zone)) {
+        $zone = $zone->render();
+      }
       // Because many time zones exist in PHP only for backward compatibility
       // reasons and should not be used, the list is filtered by a regular
       // expression.
@@ -175,6 +202,8 @@ class SmartDateTimezoneWidget extends SmartDateDefaultWidget implements Containe
       }
     }
 
+    $now = time();
+
     // Sort the translated time zones alphabetically.
     asort($zones);
     if ($grouped) {
@@ -183,11 +212,25 @@ class SmartDateTimezoneWidget extends SmartDateDefaultWidget implements Containe
         $split = explode('/', $value);
         $city = array_pop($split);
         $region = array_shift($split);
+
+        // If configured, add the timezone abbreviation.
+        if ($add_abbr) {
+          $tz = new \DateTimeZone(str_replace(' ', '_', $key));
+          $transition = $tz->getTransitions($now, $now);
+          $abbr = $transition[0]['abbr'];
+          if ($add_abbr == 'before') {
+            $prepend = $abbr . ' ';
+          } elseif ($add_abbr == 'after') {
+            $append = ' ' . $abbr;
+          }
+        }
+
         if (!empty($region)) {
-          $grouped_zones[$region][$key] = empty($split) ? $city : $city . ' (' . implode('/', $split) . ')';
+          $label = empty($split) ? $city : $city . ' (' . implode('/', $split) . ')';
+          $grouped_zones[$region][$key] = $prepend . $label . $append;
         }
         else {
-          $grouped_zones[$key] = $value;
+          $grouped_zones[$key] = $prepend . $value . $append;
         }
       }
       foreach ($grouped_zones as $key => $value) {

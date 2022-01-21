@@ -1,7 +1,10 @@
 uuid: 302f35d4-ddac-4285-b1ba-44fc3a3c794b
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - media
+    - system
 _core:
   default_config_hash: V_AqOIgcX5DMOy1ENrfxtXeEtfIZ15Bn7vRW8g4EhJw
 id: anonymous
@@ -10,5 +13,4 @@ weight: 0
 is_admin: false
 permissions:
   - 'access content'
-  - 'search content'
   - 'view media'

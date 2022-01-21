@@ -37,7 +37,7 @@ field.formatter.settings.smartdate_recurring:
       translation context: 'Smart date display'
 
 field.formatter.settings.smartdate_dailyrange:
-  type: field.formatter.settings.smartdate_dailyrange
+  type: field.formatter.settings.datetime_default
   label: 'Smart date daily range display format settings'
   mapping:
     timezone_override:

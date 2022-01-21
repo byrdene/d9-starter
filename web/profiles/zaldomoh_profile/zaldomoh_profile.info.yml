@@ -1,7 +1,7 @@
 name: zaldomoh profile
 type: profile
 description: 'custom zaldomoh profile package'
-core_version_requirement: ^8.8 | ^9.0
+core_version_requirement: ^9.0
 
 distribution:
   name: zaldomoh profile
@@ -56,6 +56,9 @@ install:
   - allowed_formats
   - better_exposed_filters
   - block_class
+  - chosen
+  - chosen_field
+  - chosen_lib
   - coffee
   - config_filter
   - config_ignore
@@ -73,8 +76,11 @@ install:
   - environment_indicator
   - field_group
   - focal_point
+  - form_display_field_machine_name
   - gin_toolbar
   - honeypot
+  - imageapi_optimize
+  - imageapi_optimize_resmushit
   - inline_entity_form
   - jquery_ui
   - jquery_ui_accordion
@@ -86,6 +92,7 @@ install:
   - lazy
   - linked_field
   - linkit
+  - media_entity_download
   - menu_admin_per_menu
   - menu_breadcrumb
   - menu_link_attributes

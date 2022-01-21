@@ -10,7 +10,7 @@ trait SmartDateRecurTrait {
   /**
    * Helper function to massage an array for inclusion in output.
    */
-  private function massageForOutput($output, array $settings, $add_classes = NULL) {
+  protected function massageForOutput($output, array $settings, $add_classes = NULL) {
     if (!$add_classes) {
       $add_classes = $this->getSetting('add_classes');
     }
@@ -28,7 +28,7 @@ trait SmartDateRecurTrait {
   /**
    * Helper function to create a collapsed display of events within a day.
    */
-  private function formatWithinDay(array $instances, array $settings) {
+  protected function formatWithinDay(array $instances, array $settings) {
     $settings_notime = $this->settingsFormatNoTime($settings);
     $settings_nodate = $this->settingsFormatNoDate($settings);
     $settings_notz = $this->settingsFormatNoTz($settings_nodate);

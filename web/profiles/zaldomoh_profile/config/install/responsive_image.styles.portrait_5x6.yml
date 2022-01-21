@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.5x6_small
+    - image.style.5x6_small_retina
+    - image.style.5x6_x_small
+    - image.style.5x6_x_small_retina
+id: portrait_5x6
+label: 'Portrait (5x6)'
+image_style_mappings:
+  -
+    image_mapping_type: sizes
+    image_mapping:
+      sizes: 100vw
+      sizes_image_styles:
+        - 5x6_small
+        - 5x6_small_retina
+        - 5x6_x_small
+        - 5x6_x_small_retina
+    breakpoint_id: responsive_image.viewport_sizing
+    multiplier: 1x
+breakpoint_group: responsive_image
+fallback_image_style: 5x6_x_small

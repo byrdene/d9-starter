@@ -18,17 +18,17 @@ function smart_date_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.smart_date':
       if (\Drupal::moduleHandler()->moduleExists('field_ui')) {
-        $field_ui_link = Url::fromRoute('help.page', ['name' => 'field_ui']);
+        $field_ui_link = Url::fromRoute('help.page', ['name' => 'field_ui'])->toString();
       }
       else {
         $field_ui_link = '#';
       }
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('The Smart Date module provides a Date field that stores start dates and times, as well as end dates and times. See the <a href=":field">Field module help</a> and the <a href=":field_ui">Field UI module help</a> pages for general information on fields and how to create and manage them. For more information, see the <a href=":datetime_do">online documentation for the Datetime Range module</a>.', [
-        ':field' => Url::fromRoute('help.page', ['name' => 'field']),
+      $output .= '<p>' . t('The Smart Date module provides a Date field that stores start dates and times, as well as end dates and times. See the <a href=":field">Field module help</a> and the <a href=":field_ui">Field UI module help</a> pages for general information on fields and how to create and manage them. For more information, see the <a href=":datetime_do">online documentation for the Smart Date module</a>.', [
+        ':field' => Url::fromRoute('help.page', ['name' => 'field'])->toString(),
         ':field_ui' => $field_ui_link,
-        ':datetime_do' => 'https://www.drupal.org/documentation/modules/smart_date',
+        ':datetime_do' => 'https://www.drupal.org/docs/contributed-modules/smart-date',
       ]) . '</p>';
       $output .= '<h3>' . t('Uses') . '</h3>';
       $output .= '<dl>';
@@ -144,11 +144,17 @@ function smart_date_form_node_form_alter(&$form, FormStateInterface $form_state,
         $end_time->setTime(23, 59);
     }
   }
-  $form[$start_field]['widget'][0]['value']['#default_value'] = $start_time;
   if (!$end_time) {
     // Offset the end time based on default duration.
     $end_time = clone $start_time;
     $end_time->modify('+' . $defaults['default_duration'] . ' minutes');
   }
-  $form[$start_field]['widget'][0]['end_value']['#default_value'] = $end_time;
+  if (isset($form[$start_field]['widget'][0]['time_wrapper'])) {
+    $form[$start_field]['widget'][0]['time_wrapper']['value']['#default_value'] = $start_time;
+    $form[$start_field]['widget'][0]['time_wrapper']['end_value']['#default_value'] = $end_time;
+  }
+  else {
+    $form[$start_field]['widget'][0]['value']['#default_value'] = $start_time;
+    $form[$start_field]['widget'][0]['end_value']['#default_value'] = $end_time;
+  }
 }
